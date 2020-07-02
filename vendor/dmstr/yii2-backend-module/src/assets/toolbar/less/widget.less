@@ -1,0 +1,67 @@
+#sidebar-wrapper {
+
+  #sidebar-toggle {
+    position: absolute;
+    top: 0;
+    right: -50px;
+    width: 50px;
+    opacity: 0.85;
+    &:hover {
+        opacity: 1;
+    }
+  }
+
+  position: fixed;
+  top: 0;
+  z-index: 1100;
+  width: 80vw;
+  max-width: 80%;
+  margin-left: -80vw;
+
+  transition-property: margin-left;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+
+  nav {
+    margin-bottom: 0;
+  }
+
+  iframe {
+    border: 0 solid white;
+
+    background: #ccc;
+    height: 100vh;
+    width: 100%;
+  }
+
+  .sidebar-panel {
+    height: 100vh;
+    overflow: auto;
+    opacity: 0.1;
+
+    transition-property: opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+  }
+
+  &.active {
+    margin-left: 0;
+  }
+  &:hover {
+    .sidebar-panel {
+      opacity: 1;
+    }
+  }
+
+  &.show-iframe {
+    .sidebar-panel {
+      opacity: 1;
+    }
+  }
+  &.hide-iframe {
+    .sidebar-panel {
+      opacity: 0;
+    }
+  }
+
+}

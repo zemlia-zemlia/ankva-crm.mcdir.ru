@@ -1,0 +1,48 @@
+@borderColor: #dddddd;
+.detail-view.table {
+  position: relative;
+  border: none;
+  .kv-edit-mode {
+    .kv-detail-view {
+      overflow: visible;
+      .table {
+        margin-bottom: 0;
+      }
+    }
+
+    .buttons-container {
+      padding: 8px 8px 0 10px;
+      margin: 0;
+      text-align: right;
+      border: 1px solid #dddddd;
+
+      .alert {
+        margin-bottom: 0;
+      }
+
+      .kv-buttons-1, .kv-buttons-2 {
+        display: inline-block;
+        text-align: left;
+      }
+
+      .kv-buttons-2 {
+        margin-bottom: 8px;
+      }
+
+      &.floated-buttons {
+        z-index: 5;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: white;
+        //left: 0;
+        padding-top: 10px;
+        border-top: 1px solid @borderColor;
+        //border-left: 1px solid @borderColor;
+        margin: 0;
+        padding-right: 10px;
+        //border-right: 1px solid @borderColor;
+      }
+    }
+  }
+}

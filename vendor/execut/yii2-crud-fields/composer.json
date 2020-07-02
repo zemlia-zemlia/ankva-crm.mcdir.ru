@@ -1,0 +1,32 @@
+{
+  "name": "execut/yii2-crud-fields",
+  "description": "A behavior for standard fields logic in CRUD based on kartik dynagrid and detailView",
+  "keywords": ["yii2 grid", "yii2 fields"],
+  "homepage": "https://github.com/execut/yii2-crud-fields",
+  "type": "library",
+  "license": "Apache-2.0",
+  "support": {
+    "issues": "https://github.com/execut/yii2-crud-fields/issues?state=open",
+    "wiki": "https://github.com/execut/yii2-crud-fields/wiki",
+    "source": "https://github.com/execut/yii2-crud-fields"
+  },
+  "authors": [
+    {
+      "name": "eXeCUT"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "yiisoft/yii2": "@dev",
+    "kartik-v/yii2-date-range": "*",
+    "kartik-v/yii2-widget-select2": "*",
+    "unclead/yii2-multiple-input": "*",
+    "execut/yii2-save-relations-behavior": "*",
+    "execut/yii2-kcfinder": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "execut\\crudFields\\": ""
+    }
+  }
+}

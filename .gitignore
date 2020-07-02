@@ -13,7 +13,7 @@ nbproject
 Thumbs.db
 
 # composer vendor dir
-/vendor
+
 
 # composer itself is not needed
 composer.phar
@@ -34,8 +34,3 @@ tests/_support/_generated
 #vagrant folder
 /.vagrant
 
-/web/images/*
-
-/web/assets/*
-/web/index.php
-/web/index-text.php
