@@ -1,0 +1,31 @@
+{
+  "name": "execut/yii2-pages",
+  "description": "Yii2 module for pages managing with CRUD",
+  "keywords": ["yii2 pages"],
+  "homepage": "https://github.com/execut/yii2-pages",
+  "type": "library",
+  "license": "Apache-2.0",
+  "support": {
+    "issues": "https://github.com/execut/yii2-pages/issues?state=open",
+    "wiki": "https://github.com/execut/yii2-pages/wiki",
+    "source": "https://github.com/execut/yii2-pages"
+  },
+  "authors": [
+    {
+      "name": "eXeCUT"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "@dev",
+    "execut/yii2-base": "@dev",
+    "execut/yii2-crud": "@dev",
+    "execut/yii2-crud-fields": "@dev",
+    "execut/yii2-dependencies": "@dev",
+    "execut/yii2-migration": "@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "execut\\pages\\": ""
+    }
+  }
+}
