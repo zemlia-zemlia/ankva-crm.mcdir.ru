@@ -68,8 +68,8 @@ class UserLog extends \yii\db\ActiveRecord
         $user->ip = Yii::$app->request->remoteIP;
         $user->login = $user_id;
 
-         $_browser =    get_browser(Yii::$app->request->userAgent) ;
-        $user->browser = $_browser->browser . ' / ' . $_browser->platform . ' / ' . $_browser->device_type;
+        // $_browser =    get_browser(Yii::$app->request->userAgent) ;
+        $user->browser = ''; // $_browser->browser . ' / ' . $_browser->platform . ' / ' . $_browser->device_type;
         $user->date = time();
         //var_dump($user);die;
         $user->save();
