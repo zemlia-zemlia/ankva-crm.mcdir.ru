@@ -93,7 +93,7 @@ class LocationHelper
 
     public static function metroList($city_id = null, $selected_stations = null)
     {
-        if ($city_id == null)$city_id = 1;
+//        if ($city_id == null)$city_id = 1;
         /** @var City $city */
         $city = City::findOne($city_id);
 //var_dump($selected_stations);die;
@@ -107,7 +107,7 @@ class LocationHelper
 //        var_dump($selected );die;
         $select = '';
 
-        if ($city->name == 'Москва') {
+        if ($city && $city->name == 'Москва') {
 
             $metro = MoscowMetro::find()->all();
             $metro_line = MoscowMetroLine::find()->all();
@@ -135,7 +135,7 @@ class LocationHelper
                 $select .= '</optgroup>';
 
             }
-        } elseif ($city->name == 'Санкт-Петербург') {
+        } elseif ($city && $city->name == 'Санкт-Петербург') {
 
             $metro = SpbMetro::find()->all();
             $metro_line = SpbMetroLine::find()->all();
@@ -163,7 +163,7 @@ class LocationHelper
                 $select .= '</optgroup>';
 
             }
-        } else {
+        } else if ($city){
 
             $stations = MetroStation::find()->where(['city' => $city->name])->all();
             // $metro_line = SpbMetroLine::find()->all();
@@ -179,7 +179,7 @@ class LocationHelper
             }
         }
 
-        return $select;
+        return $city ? $select : '';
     }
 
     public static function metroStationName($city_id, $station_id)

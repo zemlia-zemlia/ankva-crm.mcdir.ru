@@ -73,6 +73,7 @@ $this->registerJs($metroJs, $this::POS_END);
                 padding-left: 0px !important;
                 padding-right: 0px !important;
             }
+          
 
         </style>
 
