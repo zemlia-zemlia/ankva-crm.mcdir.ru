@@ -93,10 +93,10 @@ class LocationHelper
 
     public static function metroList($city_id = null, $selected_stations = null)
     {
-        if ($city_id == null)$city_id = 1;
+//        if ($city_id == null)$city_id = 1;
         /** @var City $city */
         $city = City::findOne($city_id);
-//var_dump($city_id);die;
+//var_dump($selected_stations);die;
         if (is_array($selected_stations)) {
             $selected = array_map(function ($value) {
                 return intval($value);
@@ -104,7 +104,7 @@ class LocationHelper
         } else {
             $selected = [];
         }
-
+//        var_dump($selected );die;
         $select = '';
 
         if ($city->name == 'Москва') {

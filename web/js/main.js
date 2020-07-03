@@ -2,8 +2,9 @@ $(document).ready(function(){
 
     //    var country = document.getElementById('rooms-countrysearch');
     // if($("body").is("#rooms-districtsearch")) {
-
+        if($("input").is("#rooms-districtsearch")){
         var district = document.getElementById('rooms-districtsearch');
+           }
         var districtName = document.getElementById('rooms-districtnamesearch');
         var city = document.getElementById('rooms-citysearch');
         var cityName = document.getElementById('rooms-citynamesearch');
@@ -25,11 +26,12 @@ $(document).ready(function(){
 
     var arrDistrictName = {};
     var arrCityName = {};
-
-    var arrDistrictOption = district.querySelectorAll('option');
+    if($("input").is("#rooms-districtsearch")) {
+        var arrDistrictOption = district.querySelectorAll('option');
 
     for ( var i = 1; i < arrDistrictOption.length; i++ ) {
         arrDistrictName[arrDistrictOption[i].value] = arrDistrictOption[i].innerHTML;
+    }
     }
 
     var issetCategory = GetURLParameter('Rooms[catSearch]');
@@ -74,34 +76,35 @@ $(document).ready(function(){
             
         }
     }
-    
-    
-    function changeDistrict() {
-        
-        city.innerHTML = "";
 
-        if( district.value !== '' ) {
+    if($("input").is("#rooms-districtsearch")) {
+        function changeDistrict() {
 
-            districtName.value = arrDistrictName[district.value];
+            city.innerHTML = "";
 
-            $.ajax({
-                url: '/rooms/district-change',
-                type: 'get',
-                data: "id=" + district.value,
-                success: function(res){
-                    addOption(res, city, cityName);
-                },
-                error: function(){
-                    alert('Ошибка!');
-                }
-            });
-        } else {
-            var newOption = document.createElement('option');
-            newOption.innerHTML = 'Город';
-            city.appendChild(newOption);
-            city.setAttribute('disabled', 'true');
+            if (district.value !== '') {
+
+                districtName.value = arrDistrictName[district.value];
+
+                $.ajax({
+                    url: '/rooms/district-change',
+                    type: 'get',
+                    data: "id=" + district.value,
+                    success: function (res) {
+                        addOption(res, city, cityName);
+                    },
+                    error: function () {
+                        alert('Ошибка!');
+                    }
+                });
+            } else {
+                var newOption = document.createElement('option');
+                newOption.innerHTML = 'Город';
+                city.appendChild(newOption);
+                city.setAttribute('disabled', 'true');
+            }
         }
-}
+    }
 
 
     function addOption(data, city, cityName) {

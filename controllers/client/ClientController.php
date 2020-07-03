@@ -2,6 +2,7 @@
 
 namespace app\controllers\client;
 
+use app\helpers\LocationHelper;
 use app\models\client\ClientNotes;
 use app\models\client\ClientPayment;
 use app\models\client\StaffLog;
@@ -209,6 +210,8 @@ class ClientController extends SiteController
         $model = new Client();
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->metro = json_encode(Yii::$app->request->post('metro'));
+
             $user = new User();
             $user->setPassword(rand(10000,99999));
             $user->generateAuthKey();
@@ -227,7 +230,7 @@ class ClientController extends SiteController
                 $model->id_company = Yii::$app->user->identity->id_company;
             //    $model->metro = '1';
            //     $model->metro[] = ArrayHelper::getValue($query, 'metro');
-                $model->metro = $model->metro ? implode(',', $model->metro) : '';
+//                $model->metro = $model->metro ? implode(',', $model->metro) : '';
 
                 $model->user_id = $user->getId();
 //
@@ -315,7 +318,9 @@ class ClientController extends SiteController
 
         if ($model->load(Yii::$app->request->post())) {
             $model->district = json_encode($model->district);
+            $model->metro = json_encode(Yii::$app->request->post('metro'));
 
+//            \yii\helpers\VarDumper::dump($model->metro, 5,true);die;
             if(!$model->date_registration AND $model->status =='1'){
                 $model->date_registration = time();
                 $staffLog =  new StaffLog();
@@ -365,6 +370,7 @@ class ClientController extends SiteController
         }
 
         $model->district = json_decode($model->district);
+        $model->metro = json_decode($model->metro);
         $model->typeproperty = json_decode($model->typeproperty);
 
         UserSmsController::actionCheckStatus($id);
@@ -490,6 +496,14 @@ class ClientController extends SiteController
 
         }
 
+    }
+
+    public function actionMetroList(){
+
+        $city_id = Yii::$app->request->get('city_id');
+        $selected_station = Yii::$app->request->get('selected_station');
+        $metro_list = LocationHelper::metroList($city_id ,  json_decode($selected_station));
+        return  $metro_list ;
     }
 
 

@@ -29,6 +29,7 @@ use app\validators\PhoneValidator;
  * @property string $source
  * @property string $status
  * @property string $fullName
+ * @property string $metro
  *
  * @property City $city
  * @property User $user_id
