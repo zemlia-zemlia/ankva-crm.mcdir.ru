@@ -6,305 +6,360 @@ use kartik\select2\Select2;
 use yii\widgets\MaskedInput;
 use app\validators\PhoneValidator;
 use app\helpers\LocationHelper;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\client\Client */
 /* @var $form yii\widgets\ActiveForm */
+
+//\app\assets\MultiSelectAsset::register($this);
+$this->registerJsVar('metroListUrl', \yii\helpers\Url::to('/client/client/metro-list', true));
+$this->registerJsVar('selectedStation', $model->metro);
+
+$metroJs = <<< JS
+
+$('.content-wrapper').on('change', '#client_city_selector', function() {
+    
+    cityId = $(this).val();
+    
+    $.get( metroListUrl,  {
+        city_id: cityId, 
+        selected_station: JSON.stringify(selectedStation)
+        } , function( data ) {
+        if (data){
+            $( "#location_metro_selector" ).html( data
+                // '<select id="location_metro_selector" data-idx="0" name="metro[]" multiple="multiple" ' + data +  '</select>'
+               );
+            $('#location_metro_selector').prop('disabled', false);
+            $('#location_metro_selector').multiselect('reload');
+            $('#metro_selector').show();
+            console.log(data);
+        }
+    });
+    
+      
+    
+   
+    
+
+    
+    
+    
+});
+JS;
+
+$this->registerJs($metroJs, $this::POS_END);
+
+
 ?>
 
-<div class="client-form">
+    <div class="client-form">
 
-    <?php $form = ActiveForm::begin();
-    if ($model->city_id) $region = $model->region;
-    else $region = "";
+        <?php $form = ActiveForm::begin();
+        if ($model->city_id) $region = $model->region;
+        else $region = "";
 
-    if ($model->district) $city = $model->city_id;
-    else $city = "";
+        if ($model->district) $city = $model->city_id;
+        else $city = "";
 
-    if ($model->mobile) $form_disable = '1';
-    else $form_disable = "0";
-//    var_dump($model);die;
-    ?>
-<style>
-    .form_info{
-        background-color: #FFF;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-    }
-
-</style>
-
-
-    <div class="col-md-12 form_info">
-        <div class="col-md-10">
-
-            <h4>Информация о клиенте</h4>
-
-
-
-
-
-            <div class="row" style="background-color: #f7f7f7;
-    padding-top: 10px;
-    padding-bottom: 3px;">
-        <div class="col-lg-3"><?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?></div>
-        <div class="col-lg-3"><?= $form->field($model, 'lastname')->textInput(['maxlength' => true]) ?></div>
-        <div class="col-lg-3"><?= $form->field($model, 'middlename')->textInput(['maxlength' => true]) ?></div>
-
-
-            <div class="col-lg-3"><?= $form->field($model, 'mobile')->widget(MaskedInput::className(), [
-                    'mask' => '+7 (999) 999 99 99',
-                ])->textInput() ?></div>
-
-
-
-
-
-    </div>
-
-            <h4>Параметры поиска</h4>
-
-            <div class="row" style="background-color: #f7f7f7;
-    padding-top: 10px;
-    padding-bottom: 3px;">
-        <div class="col-lg-3"><?= $form->field($model, 'region', [
-                'options' => [
-                    'class' => 'form-group',
-                ],
-            ])->dropDownList(LocationHelper::regionList(), [
-                'id' => 'client_region_selector',
-                'data-idx' => '0',
-                'prompt' => [
-                    'text' => '---',
-                    'options' => [
-                        'value' => '',
-                    ]
-                ],
-            ]) ?></div>
-
-
-        <div class="col-lg-3"><?= $form->field($model, 'city_id')->dropDownList(\app\helpers\LocationHelper::cityList($region),
-                ['id' => 'client_city_selector']) ?></div>
-        <div class="col-lg-3">
-            <?php  echo $form->field($model, 'district')->label(false)->widget(Select2::className(), [
-                'data' => \app\helpers\LocationHelper::districtList($city),
-                'size' => Select2::LARGE,
-                'theme' => Select2::THEME_DEFAULT,
-
-                'options' => [
-                    'multiple' => true,
-
-                    'placeholder' => '',
-                    'label' => true
-                ],
-                'pluginOptions' => [
-                    'tags' => true
-                ]
-            ])->label('Район');
-            ?>
-
-
-
-        </div>
-
-
-
-        <div class="col-lg-3"> <?= $form->field($model, 'dop_tel')->widget(MaskedInput::className(), [
-                'mask' => '+7 (999) 999 99 99',
-            ])->textInput() ?></div>
-
-
-
-
-    </div>
-
-
-            <div class="row" style="background-color: #f7f7f7;
-   ">
-
-
+        if ($model->mobile) $form_disable = '1';
+        else $form_disable = "0";
+        //    var_dump($model);die;
+        ?>
         <style>
-           .field-client-typeproperty .input-lg, .field-client-district .input-lg {
-               padding: 0;
-               font-size: 21px;
-
-           }
-
-            .select2-selection__choice {
-                font-size: small;
+            .form_info {
+                background-color: #FFF;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
             }
 
         </style>
 
 
+        <div class="col-md-12 form_info">
+            <div class="col-md-10">
 
-        <div class="col-lg-3">
-
-            <?php  echo $form->field($model, 'typeproperty')->label(false)->widget(Select2::className(), [
-                'data' => \app\models\TypeProperty::getList(),
-                'size' => Select2::LARGE,
-                'theme' => Select2::THEME_DEFAULT,
-
-                'options' => [
-                    'multiple' => true,
-
-                    'placeholder' => '',
-                    'label' => true
-                ],
-                'pluginOptions' => [
-                    'tags' => true
-                ]
-            ])->label('Тип недвижимости');
-            ?>
+                <h4>Информация о клиенте</h4>
 
 
-        </div>
-        <div class="col-lg-2"><?= $form->field($model, 'price_from')->textInput() ?></div>
-        <div class="col-lg-2"><?= $form->field($model, 'price_to')->textInput() ?></div>
+                <div class="row" style="background-color: #f7f7f7;
+    padding-top: 10px;
+    padding-bottom: 3px;">
+                    <div class="col-lg-3"><?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?></div>
+                    <div class="col-lg-3"><?= $form->field($model, 'lastname')->textInput(['maxlength' => true]) ?></div>
+                    <div class="col-lg-3"><?= $form->field($model, 'middlename')->textInput(['maxlength' => true]) ?></div>
 
-    </div>
 
-            <h4>Параметры автоподбора</h4>
-            <div class="row" style="background-color: #f7f7f7;
+                    <div class="col-lg-3"><?= $form->field($model, 'mobile')->widget(MaskedInput::className(), [
+                            'mask' => '+7 (999) 999 99 99',
+                        ])->textInput() ?></div>
+
+
+                </div>
+
+                <h4>Параметры поиска</h4>
+
+                <div class="row" style="background-color: #f7f7f7;
+    padding-top: 10px;
+    padding-bottom: 3px;">
+                    <div class="col-lg-3"><?= $form->field($model, 'region', [
+                            'options' => [
+                                'class' => 'form-group',
+                            ],
+                        ])->dropDownList(LocationHelper::regionList(), [
+                            'id' => 'client_region_selector',
+                            'data-idx' => '0',
+                            'prompt' => [
+                                'text' => '---',
+                                'options' => [
+                                    'value' => '',
+                                ]
+                            ],
+                        ]) ?></div>
+
+
+                    <div class="col-lg-3"><?= $form->field($model, 'city_id')->dropDownList(\app\helpers\LocationHelper::cityList($region),
+                            ['id' => 'client_city_selector']) ?></div>
+                    <div class="col-lg-3">
+                        <?php echo $form->field($model, 'district')->label(false)->widget(Select2::className(), [
+                            'data' => \app\helpers\LocationHelper::districtList($city),
+                            'size' => Select2::LARGE,
+                            'theme' => Select2::THEME_DEFAULT,
+
+                            'options' => [
+                                'multiple' => true,
+
+                                'placeholder' => '',
+                                'label' => true
+                            ],
+                            'pluginOptions' => [
+                                'tags' => true
+                            ]
+                        ])->label('Район');
+                        ?>
+
+
+                    </div>
+
+
+                    <?php $metro_list = LocationHelper::metroList($model->city, $model->metro);
+                    //                \yii\helpers\VarDumper::dump($metro_list, 5,true);die;
+
+                    ?>
+
+
+
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                            <div id="metro_selector" data-idx="0" class="form-group"
+                                 style="display: <?= $metro_list == '' ? 'none' : 'inherit' ?>">
+                            <label class="control-label">
+                                Метро
+                            </label>
+
+                            <div>
+
+                                <select id="location_metro_selector" data-idx="0" name="metro[]"
+                                        multiple="multiple"<?php// $metro_list == '' ? ' disabled' : '' ?> title="Метро">
+                                    <?= $metro_list ?>
+                                </select>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="row" style="background-color: #f7f7f7;
+   ">
+
+
+                    <style>
+                        .field-client-typeproperty .input-lg, .field-client-district .input-lg {
+                            padding: 0;
+                            font-size: 21px;
+
+                        }
+
+                        .select2-selection__choice {
+                            font-size: small;
+                        }
+
+                    </style>
+
+                    <div class="col-lg-3"> <?= $form->field($model, 'dop_tel')->widget(MaskedInput::className(), [
+                            'mask' => '+7 (999) 999 99 99',
+                        ])->textInput() ?>
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <?php echo $form->field($model, 'typeproperty')->label(false)->widget(Select2::className(), [
+                            'data' => \app\models\TypeProperty::getList(),
+                            'size' => Select2::LARGE,
+                            'theme' => Select2::THEME_DEFAULT,
+
+                            'options' => [
+                                'multiple' => true,
+
+                                'placeholder' => '',
+                                'label' => true
+                            ],
+                            'pluginOptions' => [
+                                'tags' => true
+                            ]
+                        ])->label('Тип недвижимости');
+                        ?>
+
+
+                    </div>
+                    <div class="col-lg-2"><?= $form->field($model, 'price_from')->textInput() ?></div>
+                    <div class="col-lg-2"><?= $form->field($model, 'price_to')->textInput() ?></div>
+
+                </div>
+
+                <h4>Параметры автоподбора</h4>
+                <div class="row" style="background-color: #f7f7f7;
     padding-top: 10px;
     padding-bottom: 3px;">
 
-                <div class="col-lg-3"><?= $form->field($model, 'parser_bd')->checkbox([
-                        'label' => 'Автодобавление из парсера в БД',
-                    ]); ?></div>
-                <div class="col-lg-3"><?= $form->field($model, 'parser_sms')->checkbox([
-                        'label' => 'Автодобавление из парсера в СМС',
-                    ]); ?></div>
-
-                <div class="col-lg-3"><?= $form->field($model, 'sms_login')->checkbox([
-                        'label' => 'Отправить данные для входа в СМС',
-                    ]); ?></div>
-
-<?php
-/*
-                <?php if($model->sms_login=='1'){ ?>
-                    <div class="col-lg-3"><?= $form->field($model, 'sms_login')->checkbox([
-                            'label' => 'Отправить данные для входа в СМС',  'disabled' => true
+                    <div class="col-lg-3"><?= $form->field($model, 'parser_bd')->checkbox([
+                            'label' => 'Автодобавление из парсера в БД',
                         ]); ?></div>
-                    <?php }else{ ?>
+                    <div class="col-lg-3"><?= $form->field($model, 'parser_sms')->checkbox([
+                            'label' => 'Автодобавление из парсера в СМС',
+                        ]); ?></div>
+
                     <div class="col-lg-3"><?= $form->field($model, 'sms_login')->checkbox([
                             'label' => 'Отправить данные для входа в СМС',
                         ]); ?></div>
-                    <?php }?>
 
-*/
-?>
-            </div>
+                    <?php
+                    /*
+                                    <?php if($model->sms_login=='1'){ ?>
+                                        <div class="col-lg-3"><?= $form->field($model, 'sms_login')->checkbox([
+                                                'label' => 'Отправить данные для входа в СМС',  'disabled' => true
+                                            ]); ?></div>
+                                        <?php }else{ ?>
+                                        <div class="col-lg-3"><?= $form->field($model, 'sms_login')->checkbox([
+                                                'label' => 'Отправить данные для входа в СМС',
+                                            ]); ?></div>
+                                        <?php }?>
 
-            <h4>Параметры доступа</h4>
-            <div class="row" style="background-color: #f7f7f7;
+                    */
+                    ?>
+                </div>
+
+                <h4>Параметры доступа</h4>
+                <div class="row" style="background-color: #f7f7f7;
     padding-top: 10px;
     padding-bottom: 3px;">
 
-            <?php    if (!$model->id){ ?>
-                <div class="col-lg-2"><?= $form->field($model, 'access_days')->textInput(['value' => '30']) ?></div>
+                    <?php if (!$model->id) { ?>
+                        <div class="col-lg-2"><?= $form->field($model, 'access_days')->textInput(['value' => '30']) ?></div>
 
-                <div class="col-lg-2"><?= $form->field($model, 'sms_send')->textInput(['value' => '50']) ?></div>
-
-
-            <?php }else{ ?>
-                <div class="col-lg-2"><?= $form->field($model, 'access_days')->textInput() ?></div>
-
-                <div class="col-lg-2"><?= $form->field($model, 'sms_send')->textInput() ?></div>
+                        <div class="col-lg-2"><?= $form->field($model, 'sms_send')->textInput(['value' => '50']) ?></div>
 
 
-            <?php } ?>
+                    <?php } else { ?>
+                        <div class="col-lg-2"><?= $form->field($model, 'access_days')->textInput() ?></div>
+
+                        <div class="col-lg-2"><?= $form->field($model, 'sms_send')->textInput() ?></div>
 
 
-                <div class="col-lg-3"><?= $form->field($model, 'status')->dropDownList(\app\models\client\Client::getClientStatus()) ?></div>
+                    <?php } ?>
 
-                <div class="col-lg-3"><?= $form->field($model, 'client_type')->dropDownList($model->clientTypeName) ?></div>
 
+                    <div class="col-lg-3"><?= $form->field($model, 'status')->dropDownList(\app\models\client\Client::getClientStatus()) ?></div>
+
+                    <div class="col-lg-3"><?= $form->field($model, 'client_type')->dropDownList($model->clientTypeName) ?></div>
+
+
+                </div>
+
+                <div class="row">
+
+
+                    <!--        --><?php //var_dump($model);die ?>
+
+
+                    <div class="col-lg-3"><?= $form->field($model, 'staff_id')->dropDownList(\app\models\client\Staff::getList()) ?></div>
+
+
+                    <div class="col-lg-3"><?= $form->field($model, 'source')->textInput(['maxlength' => true]) ?></div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <br/>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="col-md-2">
+
+
+                <?= Html::submitButton(' Сохранить', ['class' => 'btn btn-success']) ?>
 
             </div>
 
-    <div class="row">
-
-
-<!--        --><?php //var_dump($model);die ?>
-
-
-        <div class="col-lg-3"><?= $form->field($model, 'staff_id')->dropDownList(\app\models\client\Staff::getList()) ?></div>
-
-
-        <div class="col-lg-3"><?= $form->field($model, 'source')->textInput(['maxlength' => true]) ?></div>
-        <div class="col-lg-3">  <div class="form-group">
-                <br/>
-            </div>
+            <?php ActiveForm::end(); ?>
         </div>
 
-
-    </div>
-        </div>
-
-        <div class="col-md-2">
-
-
-        <?= Html::submitButton(' Сохранить', ['class' => 'btn btn-success']) ?>
-
-        </div>
-
-    <?php ActiveForm::end(); ?>
-    </div>
-
-    <?php
-    $date_registration = $model->date_registration;
-    $password_view = $model->password_view;
-
-    if($date_registration){
-
-        $access = $model->access_days;
-
-        $now = $date_registration + (86400*$access);
-
-
-        $date_actual = Yii::$app->formatter->format($now, 'datetime');
-
-    }
-
-
-    ?>
-
-    <p>
         <?php
-        if($password_view){ ?>
-    <div class="callout" style="border-left: 3px solid #3c8dbc;">
-        <h4>Данные для входа в личный кабинет</h4>
-        Логин: <?=substr(preg_replace('/[^0-9]/', '', $model->mobile), 1)?> <br>
-        Пароль: <b><?=$password_view;?></b><br>
-        Сайт: <b><a href="http://ankva-site.mcdir.ru/" style="color: #3c8dbc;">ankva-site.mcdir.ru</a> </b>
+        $date_registration = $model->date_registration;
+        $password_view = $model->password_view;
+
+        if ($date_registration) {
+
+            $access = $model->access_days;
+
+            $now = $date_registration + (86400 * $access);
 
 
+            $date_actual = Yii::$app->formatter->format($now, 'datetime');
 
-</div>
-<?php      } ?>
-     <?php
-            if($date_registration){ ?>
-    <div class="callout">
-               Доступ к сайту до: <?=$date_actual;?>
-
-        <?php if($model->sms){ ?>
-
-           <br>    SMS отправлено: <?=$model->sms;?> / <?=$model->sms_send;?>
+        }
 
 
-        <?php      } ?>
+        ?>
+
+        <p>
+            <?php
+            if ($password_view){ ?>
+        <div class="callout" style="border-left: 3px solid #3c8dbc;">
+            <h4>Данные для входа в личный кабинет</h4>
+            Логин: <?= substr(preg_replace('/[^0-9]/', '', $model->mobile), 1) ?> <br>
+            Пароль: <b><?= $password_view; ?></b><br>
+            Сайт: <b><a href="http://ankva-site.mcdir.ru/" style="color: #3c8dbc;">ankva-site.mcdir.ru</a> </b>
+
+
+        </div>
+    <?php } ?>
+        <?php
+        if ($date_registration) { ?>
+            <div class="callout">
+                Доступ к сайту до: <?= $date_actual; ?>
+
+                <?php if ($model->sms) { ?>
+
+                    <br>    SMS отправлено: <?= $model->sms; ?> / <?= $model->sms_send; ?>
+
+
+                <?php } ?>
+            </div>
+        <?php } ?>
+
+        </p>
     </div>
-            <?php      } ?>
-
-    </p>
-</div>
 <?php
 
 
 ?>
-
 
 
     <div id="loader"></div>
