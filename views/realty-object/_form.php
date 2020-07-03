@@ -34,6 +34,10 @@ SortableAsset::register($this);
 CropAsset::register($this);
 ?>
 
+    <style>
+        .redactor-box>.redactor-box {display: none}
+    </style>
+
 <div class="realty-object-form">
 
     <?php $form = ActiveForm::begin([
