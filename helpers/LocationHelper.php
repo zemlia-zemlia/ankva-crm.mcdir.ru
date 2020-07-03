@@ -178,7 +178,7 @@ class LocationHelper
                 }
             }
         }
-
+//        \yii\helpers\VarDumper::dump($city, 5,true);die;
         return $city ? $select : '';
     }
 

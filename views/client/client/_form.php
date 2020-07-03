@@ -73,7 +73,7 @@ $this->registerJs($metroJs, $this::POS_END);
                 padding-left: 0px !important;
                 padding-right: 0px !important;
             }
-          
+
 
         </style>
 
@@ -144,7 +144,7 @@ $this->registerJs($metroJs, $this::POS_END);
                     </div>
 
 
-                    <?php $metro_list = LocationHelper::metroList($model->city, $model->metro);
+                    <?php $metro_list = LocationHelper::metroList($model->city->id, $model->metro);
                     //                \yii\helpers\VarDumper::dump($metro_list, 5,true);die;
 
                     ?>
