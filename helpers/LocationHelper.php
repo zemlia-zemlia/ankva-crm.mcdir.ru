@@ -93,7 +93,7 @@ class LocationHelper
 
     public static function metroList($city_id = null, $selected_stations = null)
     {
-//        if ($city_id == null)$city_id = 1;
+        if ($city_id == null)$city_id = 1;
         /** @var City $city */
         $city = City::findOne($city_id);
 //var_dump($selected_stations);die;
