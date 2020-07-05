@@ -144,7 +144,7 @@ $this->registerJs($metroJs, $this::POS_END);
                     </div>
 
 
-                    <?php $metro_list = LocationHelper::metroList($model->city->id, $model->metro);
+                    <?php $metro_list = LocationHelper::metroList($model->city ? $model->city->id : null, $model->metro);
                     //                \yii\helpers\VarDumper::dump($metro_list, 5,true);die;
 
                     ?>
